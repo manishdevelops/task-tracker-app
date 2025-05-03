@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
+const apiUrl = import.meta.env.VITE_API_URL;
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -32,8 +38,33 @@ const Login = () => {
         e.preventDefault();
         if (validate()) {
             console.log('Form submitted:', formData);
+            getUserLoggedIn();
         }
     };
+
+    const getUserLoggedIn = async () => {
+        try {
+            const res = await fetch(`${apiUrl}/api/users/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                toast.error(result.message || 'Login failed');
+            } else {
+                toast.success('Login successful!');
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            toast.error('Something went wrong. Please try again.');
+        }
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">

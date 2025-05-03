@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
+const apiUrl = import.meta.env.VITE_API_URL;
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from '../../redux/user/userSlice'
 
 const Signup = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -8,6 +16,7 @@ const Signup = () => {
         country: '',
     });
 
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [errors, setErrors] = useState({});
 
     const validate = () => {
@@ -21,6 +30,11 @@ const Signup = () => {
             newErrors.password = 'Password is required';
         } else if (formData.password.length < 6) {
             newErrors.password = 'Password must be at least 6 characters';
+        }
+        if (!confirmPassword) {
+            newErrors.confirmPassword = 'Confirm Password is required';
+        } else if (formData.password !== confirmPassword) {
+            newErrors.confirmPassword = 'Passwords do not match';
         }
         if (!formData.name) {
             newErrors.name = 'Name is required';
@@ -36,12 +50,47 @@ const Signup = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleConfirmPasswordChange = (e) => {
+        setConfirmPassword(e.target.value);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validate()) {
             console.log('Form submitted:', formData);
+            getUserData();
+
         }
     };
+
+    const getUserData = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/api/users/signup`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                // Handle API error (e.g., duplicate email, validation error)
+                console.error(result.message || 'Signup failed');
+                toast.error(result.message || 'Signup failed');
+            } else {
+                // Success
+                console.log('User signed up:', result.data);
+                dispatch(signInSuccess(result.data));
+                toast.success('Signup successful!');
+                navigate('/');
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            toast.error('Something went wrong. Please try again.');
+        }
+    }
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -71,6 +120,16 @@ const Signup = () => {
                         className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                     {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">Confirm Password</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={handleConfirmPasswordChange}
+                        className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700">Name</label>

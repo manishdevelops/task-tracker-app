@@ -1,7 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Navigation from "./components/header/Naviagtion"
+import Navigation from "./components/header/Naviagtion";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
+import CreateProject from "./components/Task/createProject";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
 
       <main>
         <Routes>
+          <Route path='/' element={<CreateProject />} />
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
 
