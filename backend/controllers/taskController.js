@@ -12,10 +12,6 @@ exports.createTask = catchAsync(async (req, res, next) => {
     }
 
     // Check if the user already has 4 projects
-    const userProjectsCount = await Project.countDocuments({ user });
-    if (userProjectsCount >= 4) {
-        return next(new AppError('A user cannot have more than 4 projects', 400));
-    }
 
     const newProject = await Task.create({
         title,

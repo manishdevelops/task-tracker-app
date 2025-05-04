@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
 
 dotenv.config();
 
@@ -11,6 +13,12 @@ process.on('uncaughtException', err => {
 });
 
 const app = require('./app');
+
+// Middleware to sanitize data against NoSQL injection
+app.use(mongoSanitize());
+
+// Middleware to sanitize data against XSS
+app.use(xss());
 
 const DB = process.env.MONGODB_URI;
 mongoose.connect(DB).then(con => {
