@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import CreateTask from './createTask';
+import CreateTask from './CreateTask';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
