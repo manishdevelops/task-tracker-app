@@ -58,12 +58,12 @@ const Signup = () => {
         e.preventDefault();
         if (validate()) {
             console.log('Form submitted:', formData);
-            getUserData();
+            handleSignup();
 
         }
     };
 
-    const getUserData = async () => {
+    const handleSignup = async () => {
         try {
             const response = await fetch(`${apiUrl}/api/users/signup`, {
                 method: 'POST',
@@ -71,6 +71,7 @@ const Signup = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
+                credentials: 'include'
             });
 
             const result = await response.json();

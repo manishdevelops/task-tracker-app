@@ -3,8 +3,10 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 const userRoute = require('./routes/userRoutes');
+const projectRoute = require('./routes/projectRoutes');
+
 const globalErrorController = require('./controllers/errorController');
-const AppError = require('./utils/appError');
+// const AppError = require('./utils/appError');
 
 const app = express();
 
@@ -12,11 +14,17 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
+
 app.use(express.json());
 
 //for users
 app.use('/api/users', userRoute);
+app.use('/api/project', projectRoute);
+
 
 
 app.use(globalErrorController);

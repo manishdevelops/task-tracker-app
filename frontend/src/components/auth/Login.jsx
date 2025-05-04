@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 const apiUrl = import.meta.env.VITE_API_URL;
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { signInSuccess } from '../../redux/user/userSlice'
 
 
 const Login = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -38,11 +41,11 @@ const Login = () => {
         e.preventDefault();
         if (validate()) {
             console.log('Form submitted:', formData);
-            getUserLoggedIn();
+            handleLogin();
         }
     };
 
-    const getUserLoggedIn = async () => {
+    const handleLogin = async () => {
         try {
             const res = await fetch(`${apiUrl}/api/users/login`, {
                 method: 'POST',
@@ -50,6 +53,7 @@ const Login = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
+                credentials: 'include'
             });
 
             const result = await res.json();
@@ -58,6 +62,7 @@ const Login = () => {
                 toast.error(result.message || 'Login failed');
             } else {
                 toast.success('Login successful!');
+                dispatch(signInSuccess(result.data));
                 navigate('/');
             }
         } catch (error) {
