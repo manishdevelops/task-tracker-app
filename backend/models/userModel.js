@@ -49,7 +49,6 @@ userSchema.methods.correctPassword = async function (candidatePassword, userPass
 userSchema.methods.createPasswordResetToken = function () {
     const resetToken = crypto.randomBytes(32).toString('hex'); //sending this token to user to reset password
     this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex'); // encrypting to protect from attackers
-    // console.log({ resetToken }, this.passwordResetToken);
     this.passwordResetExpires = Date.now() + 10 * 10 * 60 * 1000; // reset link expires in 10 minutes
     return resetToken;
 }

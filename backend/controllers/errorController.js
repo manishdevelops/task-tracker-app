@@ -23,7 +23,6 @@ const handleCastErrorDB = (error) => {
 
 const handleDuplicateFieldsDB = error => {
     const [errorField, errorValue] = Object.entries(error.keyValue).flat();
-    // const message = `Duplicate '${errorField}' value entered as '${errorValue}'.`;
     const message = 'Duplicate data entered.';
     return new AppError(message, 400);
 }
