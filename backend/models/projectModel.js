@@ -17,7 +17,17 @@ const projectSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    }
+    },
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
+
+// Define a virtual field for tasks
+projectSchema.virtual('tasks', {
+    ref: 'Task', // Model name
+    foreignField: 'project', // Field in the Task model that references the project
+    localField: '_id', // Field in the Project model that matches the foreignField
 });
 
 module.exports = mongoose.model('Project', projectSchema);

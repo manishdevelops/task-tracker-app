@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser');
 
 const userRoute = require('./routes/userRoutes');
 const projectRoute = require('./routes/projectRoutes');
+const taskRoute = require('./routes/taskRoutes');
+
 
 const globalErrorController = require('./controllers/errorController');
 // const AppError = require('./utils/appError');
@@ -23,7 +25,9 @@ app.use(express.json());
 
 //for users
 app.use('/api/users', userRoute);
-app.use('/api/project', projectRoute);
+app.use('/api/projects', projectRoute);
+app.use('/api/tasks', taskRoute);
+
 
 
 
