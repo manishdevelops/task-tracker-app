@@ -25,8 +25,12 @@ The Task Tracker Application is a full-stack MERN (MongoDB, Express, React, Node
 3. Create a `.env` file in the `backend` directory and configure the following:
    ```
    PORT=5000
-   MONGO_URI=your_mongodb_connection_string
+   MONGODB_URI=your_mongodb_connection_string
+   NODE_ENV=
    JWT_SECRET=your_jwt_secret
+   JWT_EXPIRES_IN=
+   EMAIL=set email
+   PASSWORD=set app password for nodemailer
    ```
 4. Start the backend server:
    ```bash
@@ -42,7 +46,10 @@ The Task Tracker Application is a full-stack MERN (MongoDB, Express, React, Node
    ```bash
    npm install
    ```
-3. Build the frontend:
+3. Create a `.env` file in the `frontend` directory and configure the following:
+   VITE_API_URL=http://localhost:5000
+   ```
+4. Build the frontend:
    ```bash
    npm run build
    ```
