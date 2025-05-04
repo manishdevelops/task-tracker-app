@@ -17,7 +17,7 @@ const Navigation = () => {
         try {
             const response = await fetch(`${apiUrl}/api/users/logout`, {
                 method: 'GET',
-                credentials: 'include', // Important to include cookies
+                credentials: 'include',
             });
 
             const result = await response.json();
@@ -25,8 +25,7 @@ const Navigation = () => {
             if (response.ok) {
                 dispatch(logOutUserSuccess());
                 toast.success('User logged out');
-                navigate('/');
-
+                navigate('/'); // Navigate to home page
             } else {
                 toast.error('Logout error:', result.message);
             }
@@ -43,7 +42,7 @@ const Navigation = () => {
             <div className="flex space-x-4">
                 {currentUser ? (
                     <>
-                        <span className="px-4 py-2">Hello, {currentUser.user.name}</span>
+                        <span className="px-4 py-2">Hello, {currentUser?.user?.name}</span>
                         <Link
                             to="/show-projects"
                             className="px-4 py-2 border border-white rounded hover:bg-white hover:text-gray-800 transition"

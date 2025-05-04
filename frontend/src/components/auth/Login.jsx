@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 const apiUrl = import.meta.env.VITE_API_URL;
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { signInSuccess } from '../../redux/user/userSlice'
 
@@ -100,12 +100,20 @@ const Login = () => {
                     />
                     {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                 </div>
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-                >
-                    Submit
-                </button>
+                <div className="flex justify-between items-center mb-4">
+                    <button
+                        type="submit"
+                        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                    >
+                        Login
+                    </button>
+                    <Link
+                        to="/forgot-password"
+                        className="text-blue-500 hover:underline text-sm"
+                    >
+                        Forgot Password?
+                    </Link>
+                </div>
             </form>
         </div>
     );
